@@ -62,15 +62,19 @@ export const UploadButton = (props) => {
   };
   const handleOpenFolderDialog = () => {
     setOpenFolder(true);
+    setOpenMenu(false);
   };
   const handleOpenFileDialog = () => {
     setOpenFile(true);
+    setOpenMenu(false);
   };
   const handleCloseFolderDialog = () => {
     setOpenFolder(false);
+    setOpenMenu(false);
   };
   const handleCloseFileDialog = () => {
     setOpenFile(false);
+    setOpenMenu(false);
   };
 
   return (

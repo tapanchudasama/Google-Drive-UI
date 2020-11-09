@@ -93,6 +93,7 @@ export const Content = (props) => {
   const handleRename = (event) => {
     handleRenameItem(selectedItemId, selectedItemName);
   };
+
   return (
     <Router>
       <div onContextMenu={handleRightClick} style={{ cursor: "context-menu" }}>
@@ -100,7 +101,7 @@ export const Content = (props) => {
           <Grid container spacing={1}>
             {contents.map((curr) => {
               return (
-                <div>
+                <>
                   <Grid
                     item
                     xs={3}
@@ -137,7 +138,7 @@ export const Content = (props) => {
                       <Button onClick={handleDelete}>Delete</Button>
                     </MenuItem>
                   </Menu>
-                </div>
+                </>
               );
             })}
           </Grid>
