@@ -29,22 +29,6 @@ export const UploadButton = (props) => {
   const handleClickAway = () => {
     setOpenMenu(false);
   };
-  const handleOpenFolderDialog = () => {
-    setOpenFolder(true);
-    setOpenMenu(false);
-  };
-  const handleOpenFileDialog = () => {
-    setOpenFile(true);
-    setOpenMenu(false);
-  };
-  const handleCloseFolderDialog = () => {
-    setOpenFolder(false);
-    setOpenMenu(false);
-  };
-  const handleCloseFileDialog = () => {
-    setOpenFile(false);
-    setOpenMenu(false);
-  };
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -61,15 +45,15 @@ export const UploadButton = (props) => {
         <Grow in={openMenu}>
           <Card className={classes.dropdown} elevation={5}>
             <CardContent>
-              <Button onClick={handleOpenFolderDialog}>
+              <Button onClick={() => setOpenFolder(true)}>
                 <FolderOutlinedIcon />
-                <Typography variant="body2" className={classes.carditem}>
+                <Typography variant="button" className={classes.carditem}>
                   Folder
                 </Typography>
               </Button>
               <UploadDialog
                 open={openFolder}
-                onClose={handleCloseFolderDialog}
+                onClose={() => setOpenFolder(false)}
                 handleAddFile={handleAddFile}
                 title="New Folder"
               />
@@ -78,28 +62,28 @@ export const UploadButton = (props) => {
             <Divider />
 
             <CardContent>
-              <Button onClick={handleOpenFolderDialog}>
+              <Button onClick={() => setOpenFolder(true)}>
                 <FolderOutlinedIcon />
-                <Typography variant="body2" className={classes.carditem}>
+                <Typography variant="button" className={classes.carditem}>
                   Folder Upload
                 </Typography>
               </Button>
               <UploadDialog
                 open={openFolder}
-                onClose={handleCloseFolderDialog}
+                onClose={() => setOpenFolder(false)}
                 handleAddFolder={handleAddFolder}
                 title="New Folder"
               />
 
-              <Button onClick={handleOpenFileDialog}>
+              <Button onClick={() => setOpenFile(true)}>
                 <InsertDriveFileOutlinedIcon />
-                <Typography variant="body2" className={classes.carditem}>
+                <Typography variant="button" className={classes.carditem}>
                   File Upload
                 </Typography>
               </Button>
               <UploadDialog
                 open={openFile}
-                onClose={handleCloseFileDialog}
+                onClose={() => setOpenFile(false)}
                 handleAddFile={handleAddFile}
                 title="New File"
               />

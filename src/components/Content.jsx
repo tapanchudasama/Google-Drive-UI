@@ -51,7 +51,6 @@ export const Content = (props) => {
   const handleDelete = () => {
     handleDeleteItem(selectedItemId);
   };
-  debugger
   return (
     <div onContextMenu={handleRightClick} style={{ cursor: "context-menu" }}>
       <main className={classes.content}>
