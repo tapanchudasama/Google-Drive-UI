@@ -12,13 +12,27 @@
           "id": "d9e2364d-0538-43da-ab74-aae427e00e50",
           "file": "backend",
           "type": "dir",
-          "contents": ["file.java"]
+          "contents": [
+            {
+              "id": "6e7d3366-489a-451b-8391-153828273792",
+              "file": "file.java",
+              "type": "file",
+              "contents": ["file.java"]
+            }
+          ]
         },
         {
           "id": "a5add3be-903e-4244-b31f-25b6db38a603",
           "file": "web/frontend",
           "type": "dir",
-          "contents": ["app.jsx"]
+          "contents": [
+            {
+              "id": "6e7d3366-489a-451b-8391-153828273792",
+              "file": "app.jsx",
+              "type": "file",
+              "contents": ["app.jsx"]
+            }
+          ]
         }
       ]
     },

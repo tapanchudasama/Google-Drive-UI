@@ -17,7 +17,6 @@ export const UploadDialog = (props) => {
   };
   const handleAddData = () => {
     onClose();
-    console.log(props);
     handleAddFolder !== undefined
       ? handleAddFolder(inputVal)
       : handleAddFile(inputVal);

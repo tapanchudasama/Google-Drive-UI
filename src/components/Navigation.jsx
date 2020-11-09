@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Breadcrumbs, Toolbar } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import { Route } from "react-router-dom";
 import data from "../data.json";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "flex-start",
   },
+  text: {
+    textDecoration: "none",
+  },
 }));
 
 export const Navigation = (props) => {
@@ -20,30 +22,36 @@ export const Navigation = (props) => {
   const classes = useStyles();
 
   const goHome = (event) => {
-    props.setState(data);
+    props.resetState(data);
   };
 
   return (
     <div>
       <Toolbar />
-      <Route>
-        <Breadcrumbs
-          separator="›"
-          aria-label="breadcrumb"
-          className={classes.breadcrumbs}
+      <Breadcrumbs
+        separator="›"
+        aria-label="breadcrumb"
+        className={classes.breadcrumbs}
+      >
+        <Link
+          color="textPrimary"
+          onClick={goHome}
+          style={{ cursor: "pointer" }}
         >
-          <Link color="inherit" onClick={goHome} style={{ cursor: "pointer" }}>
-            My Drive
-          </Link>
-          {breadcrumbs.map((obj, index) => {
-            if (index === breadcrumbs.length - 1) {
-              return <Typography color="textPrimary">{obj.file}</Typography>;
-            } else {
-              return <Link color="inherit">{obj.file}</Link>;
-            }
-          })}
-        </Breadcrumbs>
-      </Route>
+          My Drive
+        </Link>
+        {breadcrumbs.map((obj, index) => {
+          if (index === breadcrumbs.length - 1) {
+            return <Typography className={classes.text}>{obj.file}</Typography>;
+          } else {
+            return (
+              <Link underline="none" color="inherit">
+                {obj.file}
+              </Link>
+            );
+          }
+        })}
+      </Breadcrumbs>
     </div>
   );
 };

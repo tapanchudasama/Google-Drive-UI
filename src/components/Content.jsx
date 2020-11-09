@@ -7,45 +7,10 @@ import {
   MenuItem,
   Button,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import FolderIcon from "@material-ui/icons/Folder";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import {
-  Link as RouterLink,
-  useHistory,
-  MemoryRouter as Router,
-} from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    width: "80%",
-    marginLeft: "18%",
-  },
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
-  griditem: {
-    width: "227px",
-    height: "48px",
-    fontSize: "18px",
-  },
-  text: {
-    padding: theme.spacing(0, 3),
-    display: "inline",
-    lineHeight: "48px",
-    paddingTop: "30px",
-    paddingBottom: "30px",
-  },
-  icon: {
-    marginRight: "25px",
-    verticalAlign: "middle",
-    color: "#5F6368",
-  },
-}));
+import { RenameDialog } from "./RenameDialog";
+import { useStyles } from "./ContentStyles";
 
 const initialState = {
   mouseX: null,
@@ -61,22 +26,18 @@ export const Content = (props) => {
   } = props;
   const [state, setState] = useState(initialState);
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [selectedItemName, setSelectedItemName] = useState(null);
+  const [viewDialog, setViewDialog] = useState(false);
 
-  let history = useHistory();
   const classes = useStyles();
 
   const handleClick = (event) => {
     handleTileClick(event.target.id);
     setSelectedItemId(event.target.id);
-    setSelectedItemName(event.target.innerText);
-    history.push({ pathname: '/route' });
   };
 
   const handleRightClick = (event) => {
     event.preventDefault();
     setSelectedItemId(event.target.id);
-    setSelectedItemName(event.target.innerText);
     setState({
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4,
@@ -87,68 +48,69 @@ export const Content = (props) => {
     setState(initialState);
   };
 
-  const handleDelete = (event) => {
+  const handleDelete = () => {
     handleDeleteItem(selectedItemId);
   };
-
-  const handleRename = (event) => {
-    handleRenameItem(selectedItemId, selectedItemName);
-  };
-
+  debugger
   return (
-    <Router>
-      <div onContextMenu={handleRightClick} style={{ cursor: "context-menu" }}>
-        <main className={classes.content}>
-          <Grid container spacing={1}>
-            {contents.map((curr) => {
-              return (
-                <>
-                  <Grid
-                    item
-                    xs={3}
-                    key={curr.id}
-                    onClick={handleClick}
+    <div onContextMenu={handleRightClick} style={{ cursor: "context-menu" }}>
+      <main className={classes.content}>
+        <Grid container spacing={1}>
+          {contents.map((curr) => {
+            return (
+              <>
+                <Grid
+                  item
+                  xs={3}
+                  key={curr.id}
+                  onDoubleClick={handleClick}
+                  id={curr.id}
+                >
+                  <Paper
+                    variant="outlined"
+                    className={classes.griditem}
                     id={curr.id}
                   >
-                    <Paper
-                      variant="outlined"
-                      className={classes.griditem}
-                      id={curr.id}
-                    >
-                      <Typography className={classes.text} id={curr.id}>
-                        {curr.type === "dir" ? (
-                          <FolderIcon className={classes.icon} />
-                        ) : (
-                          <InsertDriveFileIcon className={classes.icon} />
-                        )}
-                        {curr.file}
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                  <Menu
-                    keepMounted
-                    open={state.mouseY !== null}
-                    onClose={handleClose}
-                    anchorReference="anchorPosition"
-                    anchorPosition={
-                      state.mouseY !== null && state.mouseX !== null
-                        ? { top: state.mouseY, left: state.mouseX }
-                        : undefined
-                    }
-                  >
-                    <MenuItem onClick={handleClose}>
-                      <Button onClick={handleRename}>Rename</Button>
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <Button onClick={handleDelete}>Delete</Button>
-                    </MenuItem>
-                  </Menu>
-                </>
-              );
-            })}
-          </Grid>
-        </main>
-      </div>
-    </Router>
+                    <Typography className={classes.text} id={curr.id}>
+                      {curr.type === "dir" ? (
+                        <FolderIcon className={classes.icon} />
+                      ) : (
+                        <InsertDriveFileIcon className={classes.icon} />
+                      )}
+                      {curr.file}
+                    </Typography>
+                  </Paper>
+                </Grid>
+                <Menu
+                  keepMounted
+                  open={state.mouseY !== null}
+                  onClose={handleClose}
+                  anchorReference="anchorPosition"
+                  anchorPosition={
+                    state.mouseY !== null && state.mouseX !== null
+                      ? { top: state.mouseY, left: state.mouseX }
+                      : undefined
+                  }
+                >
+                  <MenuItem onClick={handleClose}>
+                    <Button onClick={() => setViewDialog(true)}>Rename</Button>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Button onClick={handleDelete}>Delete</Button>
+                    {viewDialog && (
+                      <RenameDialog
+                        setViewDialog={setViewDialog}
+                        id={selectedItemId}
+                        handleRenameItem={handleRenameItem}
+                      />
+                    )}
+                  </MenuItem>
+                </Menu>
+              </>
+            );
+          })}
+        </Grid>
+      </main>
+    </div>
   );
 };

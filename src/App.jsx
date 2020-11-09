@@ -3,16 +3,11 @@ import { Content } from "./components/Content.jsx";
 import { Navigation } from "./components/Navigation.jsx";
 import { Sidebar } from "./components/Sidebar.jsx";
 import { v4 as uuidv4 } from "uuid";
-import cloneDeep from "lodash.clonedeep";
-import { Link as RouterLink } from "react-router-dom";
-import { Route, MemoryRouter as Router } from "react-router-dom";
-import { createBrowserHistory } from "history";
 import data from "./data.json";
 
-const customHistory = createBrowserHistory();
 
 export default class App extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       data: data,
@@ -32,7 +27,7 @@ export default class App extends React.Component {
     }
   };
 
-  handleState = (data) => {
+  resetState = (data) => {
     this.setState({
       data: data,
       breadcrumbs: [],
@@ -76,14 +71,13 @@ export default class App extends React.Component {
   };
 
   handleRenameItem = (id, name) => {
-    // let resState = cloneDeep(this.state.data);
-    // var item = resState.contents.find((x) => x.id === id);
-    // item.file = name;
-    // this.setState({
-    //   data: {
-    //     contents: resState,
-    //   },
-    // });
+    let resState = this.state.data;
+    var item = resState.contents.find((x) => x.id === id);
+    item.file = name;
+    this.setState({
+      data: resState,
+    });
+    debugger
   };
 
   handleDeleteItem = (id) => {
@@ -105,14 +99,14 @@ export default class App extends React.Component {
   };
   render() {
     return (
-      <Router history={customHistory}>
+      <div>
         <Sidebar
           handleAddFile={this.handleAddFile}
           handleAddFolder={this.handleAddFolder}
         />
         <Navigation
           data={this.state.data}
-          setState={this.handleState}
+          resetState={this.resetState}
           breadcrumbs={this.state.breadcrumbs}
         />
         {this.state.data && this.state.data.contents && (
@@ -123,7 +117,7 @@ export default class App extends React.Component {
             handleRenameItem={this.handleRenameItem}
           />
         )}
-      </Router>
+      </div>
     );
   }
 }
