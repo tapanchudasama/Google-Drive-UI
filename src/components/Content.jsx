@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import FolderIcon from "@material-ui/icons/Folder";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import {
   Link as RouterLink,
   useHistory,
@@ -69,7 +70,7 @@ export const Content = (props) => {
     handleTileClick(event.target.id);
     setSelectedItemId(event.target.id);
     setSelectedItemName(event.target.innerText);
-    history.push({ pathname: `/${event.target.innerText}` });
+    history.push({ pathname: '/route' });
   };
 
   const handleRightClick = (event) => {
@@ -115,7 +116,11 @@ export const Content = (props) => {
                       id={curr.id}
                     >
                       <Typography className={classes.text} id={curr.id}>
-                        <FolderIcon className={classes.icon} />
+                        {curr.type === "dir" ? (
+                          <FolderIcon className={classes.icon} />
+                        ) : (
+                          <InsertDriveFileIcon className={classes.icon} />
+                        )}
                         {curr.file}
                       </Typography>
                     </Paper>

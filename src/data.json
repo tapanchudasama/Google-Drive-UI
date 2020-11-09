@@ -1,0 +1,38 @@
+{
+  "id": "home",
+  "file": "root",
+  "type": "dir",
+  "contents": [
+    {
+      "id": "739002d6-8c44-4894-867c-0474685bf07c",
+      "file": "tech profile",
+      "type": "dir",
+      "contents": [
+        {
+          "id": "d9e2364d-0538-43da-ab74-aae427e00e50",
+          "file": "backend",
+          "type": "dir",
+          "contents": ["file.java"]
+        },
+        {
+          "id": "a5add3be-903e-4244-b31f-25b6db38a603",
+          "file": "web/frontend",
+          "type": "dir",
+          "contents": ["app.jsx"]
+        }
+      ]
+    },
+    {
+      "id": "81ac6911-2cec-4f5c-89de-730f33d0e4c2",
+      "file": "a.png",
+      "type": "file",
+      "contents": ["a.png"]
+    },
+    {
+      "id": "6e7d3366-489a-451b-8391-153828273792",
+      "file": "banner.png",
+      "type": "file",
+      "contents": ["banner.png"]
+    }
+  ]
+}

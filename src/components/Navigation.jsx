@@ -1,9 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Breadcrumbs, Divider, Toolbar } from "@material-ui/core";
+import { Breadcrumbs, Toolbar } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import { Route, Link as RouterLink } from "react-router-dom";
+import { Route } from "react-router-dom";
+import data from "../data.json";
 
 const useStyles = makeStyles((theme) => ({
   breadcrumbs: {
@@ -14,57 +15,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function handleClick(event) {
-  event.preventDefault();
-  console.info("You clicked a breadcrumb.");
-}
-
 export const Navigation = (props) => {
+  const { breadcrumbs } = props;
   const classes = useStyles();
+
+  const goHome = (event) => {
+    props.setState(data);
+  };
+
   return (
     <div>
       <Toolbar />
       <Route>
-        {({ location }) => {
-          debugger;
-          const pathnames = location.pathname.split("/").filter((x) => x);
-          return (
-            <Breadcrumbs
-              separator="›"
-              aria-label="breadcrumb"
-              className={classes.breadcrumbs}
-            >
-              <RouterLink color="inherit" to="/">
-                My Drive
-              </RouterLink>
-              {pathnames.map((value, index) => {
-                const last = index === pathnames.length - 1;
-                const to = `/${pathnames.slice(0, index + 1).join("/")}`;
-
-                return last ? (
-                  <Typography color="textPrimary" key={to}>
-                    {value}
-                  </Typography>
-                ) : (
-                  <RouterLink color="inherit" to={to} key={to}>
-                    {value}
-                  </RouterLink>
-                );
-              })}
-              {/* <Link color="inherit" href="/" onClick={handleClick}>
-                Material-UI
-              </Link>
-              <Link
-                color="inherit"
-                href="/getting-started/installation/"
-                onClick={handleClick}
-              >
-                Core
-              </Link>
-              <Typography color="textPrimary">Breadcrumb</Typography> */}
-            </Breadcrumbs>
-          );
-        }}
+        <Breadcrumbs
+          separator="›"
+          aria-label="breadcrumb"
+          className={classes.breadcrumbs}
+        >
+          <Link color="inherit" onClick={goHome} style={{ cursor: "pointer" }}>
+            My Drive
+          </Link>
+          {breadcrumbs.map((obj, index) => {
+            if (index === breadcrumbs.length - 1) {
+              return <Typography color="textPrimary">{obj.file}</Typography>;
+            } else {
+              return <Link color="inherit">{obj.file}</Link>;
+            }
+          })}
+        </Breadcrumbs>
       </Route>
     </div>
   );

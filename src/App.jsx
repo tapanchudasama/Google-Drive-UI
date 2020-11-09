@@ -7,70 +7,36 @@ import cloneDeep from "lodash.clonedeep";
 import { Link as RouterLink } from "react-router-dom";
 import { Route, MemoryRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import data from "./data.json";
 
 const customHistory = createBrowserHistory();
-
-const dummyData = {
-  id: "home",
-  file: "root",
-  type: "dir",
-  contents: [
-    {
-      id: "739002d6-8c44-4894-867c-0474685bf07c",
-      file: "tech profile",
-      type: "dir",
-      contents: [
-        {
-          id: "d9e2364d-0538-43da-ab74-aae427e00e50",
-          file: "backend",
-          type: "dir",
-          contents: ["file.java"],
-        },
-        {
-          id: "a5add3be-903e-4244-b31f-25b6db38a603",
-          file: "web/frontend",
-          type: "dir",
-          contents: ["app.jsx"],
-        },
-      ],
-    },
-    {
-      id: "81ac6911-2cec-4f5c-89de-730f33d0e4c2",
-      file: "a.png",
-      type: "file",
-      contents: "a.png",
-    },
-    {
-      id: "6e7d3366-489a-451b-8391-153828273792",
-      file: "banner.png",
-      type: "file",
-      contents: "banner.png",
-    },
-  ],
-};
 
 export default class App extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      data: {},
+      data: data,
+      breadcrumbs: [],
     };
   }
 
-  componentDidMount() {
-    this.setState({
-      data: dummyData,
-    });
-  }
   handleTileClick = (id) => {
     for (const obj of this.state.data.contents) {
       if (id === obj.id) {
         this.setState({
           data: obj,
+          breadcrumbs: [...this.state.breadcrumbs, obj],
         });
         break;
       }
     }
+  };
+
+  handleState = (data) => {
+    this.setState({
+      data: data,
+      breadcrumbs: [],
+    });
   };
 
   handleAddFile = (filename) => {
@@ -80,10 +46,14 @@ export default class App extends React.Component {
       type: "file",
       contents: filename,
     };
-    const resState = cloneDeep(this.state.data);
-    resState.contents.push(obj);
+    const resState = [...this.state.data.contents, obj];
     this.setState({
-      data: resState,
+      data: {
+        id: "home",
+        type: "dir",
+        file: "root",
+        contents: resState,
+      },
     });
   };
 
@@ -94,10 +64,14 @@ export default class App extends React.Component {
       type: "dir",
       contents: [],
     };
-    const resState = cloneDeep(this.state.data);
-    resState.contents.push(obj);
+    const resState = [...this.state.data.contents, obj];
     this.setState({
-      data: resState,
+      data: {
+        id: "home",
+        type: "dir",
+        file: "root",
+        contents: resState,
+      },
     });
   };
 
@@ -105,7 +79,6 @@ export default class App extends React.Component {
     // let resState = cloneDeep(this.state.data);
     // var item = resState.contents.find((x) => x.id === id);
     // item.file = name;
-
     // this.setState({
     //   data: {
     //     contents: resState,
@@ -137,8 +110,11 @@ export default class App extends React.Component {
           handleAddFile={this.handleAddFile}
           handleAddFolder={this.handleAddFolder}
         />
-        <Navigation />
-        {/* <Route path="/" exact component={Home} /> */}
+        <Navigation
+          data={this.state.data}
+          setState={this.handleState}
+          breadcrumbs={this.state.breadcrumbs}
+        />
         {this.state.data && this.state.data.contents && (
           <Content
             contents={this.state.data.contents}
